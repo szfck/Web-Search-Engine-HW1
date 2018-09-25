@@ -1,0 +1,8 @@
+doc*
+*.sh
+*.log
+*.pyc
+out
+try*
+other*
+*.html
