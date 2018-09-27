@@ -1,5 +1,4 @@
-from focused_crawl import Focused_Crawl
-from bfs_crawl import Bfs_Crawl
+import my_crawl
 import sys
 
 if __name__ == '__main__':
@@ -7,9 +6,9 @@ if __name__ == '__main__':
     search_terms = sys.argv[2:]
 
     if search_type[0] == 'f':
-        crawl = Focused_Crawl(search_terms)
+        crawl = my_crawl.My_Focused_Craw(search_terms)
     else:
-        crawl = Bfs_Crawl(search_terms)
+        crawl = my_crawl.My_Bfs_Craw(search_terms)
 
     crawl.start_crawl(10)
 

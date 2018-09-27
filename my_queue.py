@@ -1,7 +1,7 @@
 import heapq
 import Queue
 
-class Queue_Base:
+class My_Queue:
 
     def add(self, item):
         ''' abstract method '''
@@ -15,7 +15,7 @@ class Queue_Base:
         ''' abstract method '''
         raise NotImplementedError("Please Implement this method")
 
-class Priority_Queue(Queue_Base):
+class My_Priority_Queue(My_Queue):
     
     def __init__(self):
         self.max_heap = []
@@ -29,7 +29,7 @@ class Priority_Queue(Queue_Base):
     def size(self):
         return len(self.max_heap)
 
-class FIFO_Queue(Queue_Base):
+class My_FIFO_Queue(My_Queue):
     
     def __init__(self):
         self.queue = Queue.Queue()

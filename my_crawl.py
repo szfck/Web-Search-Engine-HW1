@@ -1,7 +1,9 @@
 import google_search_helper
 import urllib, htmllib, formatter
+import numpy as np
 import urlparse
 import search_util
+import my_queue
 
 class Page:
     
@@ -13,14 +15,14 @@ class Page:
         # for max heap
         return cmp(-self.score, -other.score)
 
-class Base_Crawl:
+class My_Crawl:
     MAX_HOST_VISIT_NUMBER = 20
     MAX_LINK_VISIT = 30
     FILE_TYPE_BLACKLIST = [
         'jpg', 'pdf'
     ]
 
-    def __init__(self, search_terms):
+    def __init__(self, search_terms, queue):
         self.visited_urls = set()
         self.found_pages = []
         self.hostname_count = {}
@@ -30,6 +32,7 @@ class Base_Crawl:
         search_terms_str = " ".join(search_terms)
         self.start_pages = google_search_helper.get_google_top_10_search_result(search_terms_str)
         search_terms = [x.lower() for x in search_terms]
+        self.queue = queue
 
     def is_legal_file_type(self, url):
         last_pos_of_dot = url.rfind('.')
@@ -87,14 +90,60 @@ class Base_Crawl:
                 count += 1
         return [count, doc_len]
 
-    # def get_hostname(self, url):
-    #     parsed_url = urlparse.urlparse(url)
-    #     return parsed_url.hostname
-
     def add_page(self, url):
-        ''' abstract method '''
-        raise NotImplementedError("Please Implement this method")
+        if url in self.visited_urls:
+            return
+
+        hostname = search_util.get_hostname(url)
+        if hostname in self.hostname_count:
+            if self.hostname_count[hostname] > self.MAX_HOST_VISIT_NUMBER:
+                return
+            self.hostname_count[hostname] += 1
+        else:
+            self.hostname_count[hostname] = 1
+        
+        self.visited_urls.add(url)
+        try:
+            word_count, doc_len = self.get_word_count_and_doc_len(url)
+        except:
+            return
+        score = word_count / np.sqrt(doc_len)
+        page = Page(url, score)
+        # heapq.heappush(self.max_heap, page)
+        self.queue.add(page)
+        print ("add page {} with score {}".format(url, score))
     
     def start_crawl(self, limit):
-        ''' abstract method '''
-        raise NotImplementedError("Please Implement this method")
+        for page in self.start_pages:
+            self.add_page(page)
+
+        while len(self.found_pages) < limit and self.queue.size() > 0:
+            print ('already visited {} urls'.format(len(self.visited_urls)))
+            current_page = self.queue.top_and_pop()
+            self.found_pages.append(current_page) # add to found page list
+            print ('current page {} with score {}'.format(current_page.url, current_page.score))
+            try:
+                links = self.get_all_legal_links(current_page.url)
+            except:
+                continue
+
+            link_count = 0
+            for link in links:
+                link_count += 1
+                if link_count > self.MAX_LINK_VISIT:
+                    break
+                self.add_page(link)
+
+        print ('find {} results'.format(len(self.found_pages)))
+        for page in self.found_pages:
+            print ('{}'.format(page.url))
+
+class My_Focused_Craw(My_Crawl):
+    
+    def __init__(self, search_terms):
+        My_Crawl.__init__(self, search_terms, my_queue.My_Priority_Queue())
+
+class My_Bfs_Craw(My_Crawl):
+    
+    def __init__(self, search_terms):
+        My_Crawl.__init__(self, search_terms, my_queue.My_FIFO_Queue())
