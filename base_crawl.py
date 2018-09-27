@@ -1,9 +1,21 @@
+import google_search_helper
 import urllib, htmllib, formatter
 import urlparse
 import search_util
 
+class Page:
+    
+    def __init__(self, url, score):
+        self.url = url
+        self.score = score
+    
+    def __cmp__(self, other):
+        # for max heap
+        return cmp(-self.score, -other.score)
+
 class Base_Crawl:
     MAX_HOST_VISIT_NUMBER = 20
+    MAX_LINK_VISIT = 30
     FILE_TYPE_BLACKLIST = [
         'jpg', 'pdf'
     ]
@@ -15,6 +27,9 @@ class Base_Crawl:
         self.search_terms = search_terms
         format = formatter.NullFormatter()
         self.htmlparser = search_util.LinksExtractor(format)
+        search_terms_str = " ".join(search_terms)
+        self.start_pages = google_search_helper.get_google_top_10_search_result(search_terms_str)
+        search_terms = [x.lower() for x in search_terms]
 
     def is_legal_file_type(self, url):
         last_pos_of_dot = url.rfind('.')
@@ -26,7 +41,7 @@ class Base_Crawl:
         else:
             return True
 
-    def get_all_legal_links(self, url, search_terms):
+    def get_all_legal_links(self, url):
         # format = formatter.NullFormatter()
         # htmlparser = LinksExtractor(format)
 
@@ -59,7 +74,7 @@ class Base_Crawl:
 
         return legal_links
 
-    def get_word_count_and_doc_len(self, url, search_terms):
+    def get_word_count_and_doc_len(self, url):
         try:
             response = urllib.urlopen(url)
         except:
@@ -68,18 +83,18 @@ class Base_Crawl:
         count = 0;
         doc_len = len(html)
         for word in html:
-            if word in search_terms:
+            if word in self.search_terms:
                 count += 1
         return [count, doc_len]
 
-    def get_hostname(self, url):
-        parsed_url = urlparse.urlparse(url)
-        return parsed_url.hostname
+    # def get_hostname(self, url):
+    #     parsed_url = urlparse.urlparse(url)
+    #     return parsed_url.hostname
 
     def add_page(self, url):
         ''' abstract method '''
         raise NotImplementedError("Please Implement this method")
     
-    def start_crawl(self, start_pages):
+    def start_crawl(self, limit):
         ''' abstract method '''
         raise NotImplementedError("Please Implement this method")

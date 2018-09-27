@@ -2,12 +2,13 @@ from base_crawl import Base_Crawl, Page
 import search_util
 import numpy as np
 import heapq
+import Queue
 
-class Focused_Crawl(Base_Crawl):
+class Bfs_Crawl(Base_Crawl):
 
     def __init__(self, search_terms):
         Base_Crawl.__init__(self, search_terms)
-        self.max_heap = []
+        self.queue = Queue.Queue()
     
     def add_page(self, url):
         if url in self.visited_urls:
@@ -28,16 +29,18 @@ class Focused_Crawl(Base_Crawl):
             return
         score = word_count / np.sqrt(doc_len)
         page = Page(url, score)
-        heapq.heappush(self.max_heap, page)
+        # heapq.heappush(self.max_heap, page)
+        self.queue.put(page)
         print ("add page {} with score {}".format(url, score))
     
     def start_crawl(self, limit):
         for page in self.start_pages:
             self.add_page(page)
 
-        while len(self.found_pages) < limit and len(self.max_heap) > 0:
+        while len(self.found_pages) < limit and self.queue.qsize() > 0:
             print ('already visited {} urls'.format(len(self.visited_urls)))
-            current_page = heapq.heappop(self.max_heap)
+            # current_page = heapq.heappop(self.max_heap)
+            current_page = self.queue.get()
             self.found_pages.append(current_page) # add to found page list
             print ('current page {} with score {}'.format(current_page.url, current_page.score))
             try:

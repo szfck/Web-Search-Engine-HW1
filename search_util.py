@@ -16,6 +16,9 @@ class LinksExtractor(htmllib.HTMLParser): # derive new HTML parser
     def get_links(self): # return the list of extracted links
         return self.links
 
+def get_hostname(url):
+    parsed_url = urlparse.urlparse(url)
+    return parsed_url.hostname
 
 # def page_visible(url):
 #     try:
@@ -91,10 +94,6 @@ class LinksExtractor(htmllib.HTMLParser): # derive new HTML parser
 #             # else:
 #             #     count[word] = 1
 #     return [count, doc_len]
-
-# def get_hostname(url):
-#     parsed_url = urlparse.urlparse(url)
-#     return parsed_url.hostname
 
 # def add_page(url):
 #     global doc_number
