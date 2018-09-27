@@ -2,7 +2,6 @@ import urllib
 from bs4 import BeautifulSoup
 import requests
 import webbrowser
-from urlparse import urlparse
 import search_util
 import re
 
@@ -11,12 +10,13 @@ def get_top_10_result(links):
     top_10_result = []
 
     for link in links:
-        parsed_link = urlparse(link)
-        hostname = parsed_link.hostname
+        # parsed_link = urlparse(link)
+        # hostname = parsed_link.hostname
+        hostname = search_util.get_hostname(link)
         if hostname in used_hostname:
             continue
-        if search_util.page_visible(link) == False:
-            continue
+        # if search_util.page_visible(link) == False:
+        #     continue
         top_10_result.append(link)
         used_hostname.append(hostname)
 
