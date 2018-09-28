@@ -1,20 +1,22 @@
 import heapq
 import Queue
 
+# Abstract Class of self defined Queue
 class My_Queue:
 
     def add(self, item):
-        ''' abstract method '''
+        ''' abstract method, add item to the queue '''
         raise NotImplementedError("Please Implement this method")
     
     def top_and_pop(self):
-        ''' abstract method '''
+        ''' abstract method, get the top item of the queue and pop it '''
         raise NotImplementedError("Please Implement this method")
 
     def size(self):
-        ''' abstract method '''
+        ''' abstract method, return the size of the queue '''
         raise NotImplementedError("Please Implement this method")
 
+# Priority Queue Implementation
 class My_Priority_Queue(My_Queue):
     
     def __init__(self):
@@ -29,6 +31,7 @@ class My_Priority_Queue(My_Queue):
     def size(self):
         return len(self.max_heap)
 
+# First in First out Queue implementation
 class My_FIFO_Queue(My_Queue):
     
     def __init__(self):

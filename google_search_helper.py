@@ -6,17 +6,14 @@ import search_util
 import re
 
 def get_top_10_result(links):
+    ''' given a list of links, return the top 10 result, each hostname only count once '''
     used_hostname = []
     top_10_result = []
 
     for link in links:
-        # parsed_link = urlparse(link)
-        # hostname = parsed_link.hostname
         hostname = search_util.get_hostname(link)
         if hostname in used_hostname:
             continue
-        # if search_util.page_visible(link) == False:
-        #     continue
         top_10_result.append(link)
         used_hostname.append(hostname)
 
@@ -25,6 +22,7 @@ def get_top_10_result(links):
     return top_10_result
 
 def get_google_results(search_term):
+    ''' given search_term string, get the search result from google '''
     result = []
 
     results = 50 # valid options 10, 20, 30, 40, 50, and 100
@@ -39,4 +37,5 @@ def get_google_results(search_term):
     return result
 
 def get_google_top_10_search_result(search_term):
+    ''' given search term string, return top 10 results from google search '''
     return get_top_10_result(get_google_results(search_term))

@@ -1,0 +1,34 @@
+### Program entry
+
+main.py read search type and search term from stdin, then call related crawl to search.
+
+### Queue
+
+The difference between BFS and Focused Crawl is the type of Queue. So I defined an abstract Queue class (My_Queue) with two derived class:
+- My_Priority_Queue
+- My_FIFO_Queue
+
+For different crawl, just need to change the type of queue.
+
+### Crawl
+
+I defined a Base Crawl Class(My_Crawl) with two derived class:
+- My_Focused_Crawl
+- My_Bfs_Crawl
+
+These two crawl class share the common method, the only difference is the queue's type.
+
+### Score calculate
+
+I use an easy way to calculate the page score:
+
+$$ score = \frac{\# search\_terms\_count} {\sqrt {document\_length}} $$
+
+### Related page
+
+for each search term, related page must have at least one term.
+
+### Crawl limit
+
+- limit the number of links to visit in the same page: because some page like wiki could have thousands of links
+- limit the number of links of same hostname
