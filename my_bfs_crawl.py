@@ -17,9 +17,10 @@ class My_Bfs_Crawl(My_Crawl):
 
     def __init__(self):
         My_Crawl.__init__(self)
-        self.queue = Queue.Queue() # store Url class
+        self.queue = Queue.Queue() # First in First out queue to store Url class
     
     def calculate_promise(self, url, text, relevance_score, link_number):
+        ''' bfs does not need promise value, set -1 as default'''
         return -1
     
     def add_to_queue(self, item):
@@ -31,4 +32,9 @@ class My_Bfs_Crawl(My_Crawl):
         return self.queue.get()
 
     def queue_size(self):
+        ''' return size of queue '''
         return self.queue.qsize()
+
+    def need_stop(self):
+        ''' stop to put link to queue early '''
+        return self.queue_size() > 10000

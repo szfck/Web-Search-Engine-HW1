@@ -14,8 +14,8 @@ if __name__ == '__main__':
         # use bfs search crawl
         crawl = My_Bfs_Crawl()
 
-    # search 1000 pages within 20 minutes
-    limit_size = 300
-    limit_time = 60 * 10
+    # search 1000 pages within 30 minutes
+    limit_size = 1000
+    limit_time = 60 * 30
     crawl.start_crawl(search_terms, limit_size, limit_time)
 

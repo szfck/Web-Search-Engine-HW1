@@ -23,8 +23,9 @@ I use cosine measure to calculate relevance score. But since I don't have the fu
 
 ### harvest rate
 
-Here is how I define the harvest rate: firstly, I calculate the average relevance score of start pages from google search. Then I calculate the threshhold of harvest rate = average relevance score of start pages * 0.3, the the page downloaded has higher relevance score than it, it is related with search terms 
+Here is how I define the harvest rate: firstly, I calculate the average relevance score of start pages from google search. Then I calculate the threshhold of harvest rate = average relevance score of start pages * 0.5, the the page downloaded has higher relevance score than it, it is related with search terms 
 
 ### Crawl limit
 
-- limit the number of links of same hostname: because some page like wili could have thousands of links
+- limit the number of same hostname: because some page like wili could have thousands of pages
+- limit the depth of search: to avoid getting stuck under the same web page
