@@ -30,6 +30,10 @@ class cosine_measure_strategy:
             # print ('w_q_t {}, w_d_t {}, word_score {}'.format(w_q_t, w_d_t, word_score))
             score += word_score
         return score
+        # if len(word_count) == len(self.search_terms):
+        #     return 1
+        # else:
+        #     return 0
     
     def tag_visible(self, element):
         if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:

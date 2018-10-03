@@ -21,7 +21,7 @@ def get_google_results(search_term, size):
         if "url?q=" in link_href and not "webcache" in link_href:
             link = link.get('href').split("?q=")[1].split("&sa=U")[0]
             hostname = get_hostname(link)
-            print (hostname)
+            # print (hostname)
             if hostname not in hostnames: # each host only exist once
                 hostnames.add(hostname)
                 result.append(link)

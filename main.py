@@ -16,6 +16,6 @@ if __name__ == '__main__':
 
     # search 1000 pages within 20 minutes
     limit_size = 300
-    limit_time = 60 * 20
+    limit_time = 60 * 10
     crawl.start_crawl(search_terms, limit_size, limit_time)
 
