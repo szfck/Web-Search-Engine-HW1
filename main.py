@@ -1,5 +1,6 @@
-import my_crawl
 import sys
+from my_focused_crawl import My_Focused_Crawl
+from my_bfs_crawl import My_Bfs_Crawl
 
 # entrance of program
 if __name__ == '__main__':
@@ -8,11 +9,13 @@ if __name__ == '__main__':
 
     if search_type[0] == 'f':
         # use focused search crawl
-        crawl = my_crawl.My_Focused_Crawl(search_terms)
+        crawl = My_Focused_Crawl()
     else:
         # use bfs search crawl
-        crawl = my_crawl.My_Bfs_Crawl(search_terms)
+        crawl = My_Bfs_Crawl()
 
-    # search 1000 pages with 15 minutes
-    crawl.start_crawl(1000, 60 * 15)
+    # search 1000 pages within 20 minutes
+    limit_size = 300
+    limit_time = 60 * 20
+    crawl.start_crawl(search_terms, limit_size, limit_time)
 

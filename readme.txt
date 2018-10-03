@@ -1,10 +1,11 @@
 ### File structure
 
-- google_search_helper.py : used to get top 10 result from google search
+- util.py : some help function(eg. google search)
 - search_util.py : some utility class and function
-- my_queue.py : define the queues used in crawl
-- my_crawl.py : define the crawl classes
+- page_and_url.py : define the page and url class needed
 - main.py : entrance of the program, reading search type and search terms from stdin, then run crawling
+- my_focused_crawl.py : define the focused crawl classes
+- my_bfs_crawl.py : define the bfs crawl classes
 - run.sh : bash script to run 2 queries
 - output/*.log : store logs running 2 queries
 

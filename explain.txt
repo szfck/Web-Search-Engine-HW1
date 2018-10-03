@@ -2,33 +2,29 @@
 
 main.py read search type and search term from stdin, then call related crawl to search.
 
-### Queue
+### Google Search result
 
-The difference between BFS and Focused Crawl is the type of Queue. So I defined an abstract Queue class (My_Queue) with two derived class:
-- My_Priority_Queue
-- My_FIFO_Queue
+use urllib to crawl the top 10 in google search as the start page
 
-For different crawl, just need to change the type of queue.
+### Focused Crawl
 
-### Crawl
+use priority queue to store the promised url. Every time download page 
+from url, find all the links in the page. Then calculate the promise score for 
+each link based on anchor text (count the search terms in link anchor text).
+The promise could also be updated, there are two ways:
+1. This link also exists in another page, then add the promise in these two pages together
+2. The page downloaded has relevance score, then link's promise in the page would also be influenced by the relevance value
 
-I defined a Base Crawl Class(My_Crawl) with two derived class:
-- My_Focused_Crawl
-- My_Bfs_Crawl
+I design a data structure which could update the promise value based on priority queue. For each link in the queue, I also recorded the latest promise update time in a dictionary. Every time I got the top of the priority queue, I will check the if the update time of link is the latest one, otherwise I will just throw it. 
 
-These two crawl class share the common method, the only difference is the queue's type.
+### relevance score
 
-### Score calculate
+I use cosine measure to calculate relevance score. But since I don't have the full collection when crawling, so the term frequent and document number is dynamic.
 
-I use an easy way to calculate the page score:
+### harvest rate
 
-$$ score = \frac{\# search\_terms\_count} {\sqrt {document\_length}} $$
-
-### Related page
-
-for each search term, related page must have at least one term.
+Here is how I define the harvest rate: firstly, I calculate the average relevance score of start pages from google search. Then I calculate the threshhold of harvest rate = average relevance score of start pages * 0.3, the the page downloaded has higher relevance score than it, it is related with search terms 
 
 ### Crawl limit
 
-- limit the number of links to visit in the same page: because some page like wiki could have thousands of links
-- limit the number of links of same hostname
+- limit the number of links of same hostname: because some page like wili could have thousands of links
